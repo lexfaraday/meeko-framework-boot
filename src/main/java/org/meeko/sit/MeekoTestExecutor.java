@@ -1,7 +1,5 @@
 package org.meeko.sit;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +9,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import org.meeko.sit.annotation.MeekoTest;
+import org.meeko.sit.commons.exceptions.ExceptionUtils;
 import org.meeko.sit.context.MeekoTestContext;
 import org.meeko.sit.utils.MeekoTestUtils;
 import org.meeko.sit.utils.PrettyFormat;
@@ -33,12 +32,12 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 public class MeekoTestExecutor {
 
-    private String             packageBase;
-    private int                fixedThreadPool = 100;
-    private String             environment;
-    private String             testToExecute;
-    private boolean            useTopic        = false;
-    private boolean            trace           = false;
+    private String  packageBase;
+    private int     fixedThreadPool = 100;
+    private String  environment;
+    private String  testToExecute;
+    private boolean useTopic        = false;
+    private boolean trace           = false;
 
     @Autowired
     private ApplicationContext applicationContext;
@@ -92,11 +91,7 @@ public class MeekoTestExecutor {
                                 meekoTestFlowService.testFailed(((MeekoTestFlowService) fut.get()).getName());
                             }
                         } catch (Exception e) {
-                            // TODO unify this
-                            StringWriter sw = new StringWriter();
-                            PrintWriter pw = new PrintWriter(sw);
-                            e.printStackTrace(pw);
-                            meekoTestFlowService.addStep(sw.toString());
+                            meekoTestFlowService.addStep(ExceptionUtils.getMessageException(e));
                         }
                     }
                     executorService.shutdown();
@@ -107,11 +102,7 @@ public class MeekoTestExecutor {
                 meekoTestFlowService.addStep("Please provide your base package to find your classes to launch with @MeekoTest");
             }
         } catch (Throwable e) {
-            // TODO unify this
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-            meekoTestFlowService.addStep(sw.toString());
+            meekoTestFlowService.addStep(ExceptionUtils.getMessageException(e));
         }
         meekoTestFlowService.end();
         return PrettyFormat.formatJSON(meekoTestFlowWrapper);
