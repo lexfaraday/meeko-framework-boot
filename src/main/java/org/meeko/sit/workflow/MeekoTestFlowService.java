@@ -23,16 +23,17 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 public class MeekoTestFlowService implements Cloneable {
 
-    public static final String    STATUS_OK      = "OK";
-    public static final String    STATUS_KO      = "KO";
-    private static final String   START_WORKFLOW = "Starting meekoflow for: ";
+    public static final String  STATUS_OK                = "OK";
+    public static final String  STATUS_KO                = "KO";
+    private static final String START_WORKFLOW           = "Starting meekoflow for: ";
+    private static final String DEFAULT_TEST_FAILED_DESC = "Your test has failed.";
 
-    private String                name;
-    private String                status;
-    private List<MeekoTestStep>   steps;
-    private UUID                  testId;
-    private long                  time;
-    private String                topic          = SocketConfig.MEEKO_WEBSOCKET_TOPIC + "/flow";
+    private String              name;
+    private String              status;
+    private List<MeekoTestStep> steps;
+    private UUID                testId;
+    private long                time;
+    private String              topic = SocketConfig.MEEKO_WEBSOCKET_TOPIC + "/flow";
 
     @Autowired
     private SimpMessagingTemplate template;
@@ -125,6 +126,11 @@ public class MeekoTestFlowService implements Cloneable {
 
     public void setSteps(List<MeekoTestStep> steps) {
         this.steps = steps;
+    }
+
+    public void testFailed() {
+        this.addStep(DEFAULT_TEST_FAILED_DESC, null, STATUS_KO);
+        this.status = STATUS_KO;
     }
 
     public void testFailed(String description) {
