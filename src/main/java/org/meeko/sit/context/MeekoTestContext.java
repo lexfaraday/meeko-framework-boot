@@ -2,6 +2,8 @@ package org.meeko.sit.context;
 
 import java.util.concurrent.Callable;
 
+import org.meeko.sit.annotation.MeekoTestFlow;
+import org.meeko.sit.workflow.MeekoTestFlowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
@@ -15,8 +17,11 @@ public abstract class MeekoTestContext implements Callable<Object> {
     @Autowired
     public ApplicationContext applicationContext;
 
-    private String            environment;
-    private boolean           trace;
+    @MeekoTestFlow
+    public MeekoTestFlowService workFlow;
+
+    private String  environment;
+    private boolean trace;
 
     public String getEnvironment() {
         return environment;

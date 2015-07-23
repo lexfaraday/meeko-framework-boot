@@ -108,7 +108,7 @@ public class MeekoTestExecutor {
         return PrettyFormat.formatJSON(meekoTestFlowWrapper);
     }
 
-    private void addClassToFuture(ExecutorService executorService, List<Future<?>> futureList, Map<Class<?>, MeekoTest> clazzes) {
+    private void addClassToFuture(ExecutorService executorService, List<Future<?>> futureList, Map<Class<?>, MeekoTest> clazzes) throws Exception {
         if (clazzes.keySet() != null) {
             MeekoTest meekoTestAnnotation = null;
             for (Class<?> clazz : clazzes.keySet()) {
@@ -123,6 +123,7 @@ public class MeekoTestExecutor {
                         MeekoTestContext meekoTestContext = (MeekoTestContext) obj;
                         meekoTestContext.setEnvironment(environment);
                         meekoTestContext.setTrace(trace);
+                        meekoTestContext.workFlow.start(clazz.getSimpleName());
                         Callable<?> callable = (Callable<?>) obj;
                         Future<?> future = executorService.submit(callable);
                         futureList.add(future);
