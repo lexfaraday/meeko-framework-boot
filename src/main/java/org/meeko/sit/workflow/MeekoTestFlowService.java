@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.meeko.sit.SocketConfig;
+import org.meeko.sit.commons.exceptions.ExceptionUtils;
 import org.meeko.sit.utils.PrettyFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -133,7 +134,20 @@ public class MeekoTestFlowService implements Cloneable {
         this.status = STATUS_KO;
     }
 
+    public void testFailed(Exception e) {
+        this.addStep(ExceptionUtils.getMessageException(e), null, STATUS_KO);
+        this.status = STATUS_KO;
+    }
+
     public void testFailed(String description) {
+        this.addStep(description, null, STATUS_KO);
+        this.status = STATUS_KO;
+    }
+
+    public void testFailed(String description, Exception e) {
+        StringBuilder descriptionWithException = new StringBuilder(description);
+        descriptionWithException.append(" - ");
+        descriptionWithException.append(ExceptionUtils.getMessageException(e));
         this.addStep(description, null, STATUS_KO);
         this.status = STATUS_KO;
     }
