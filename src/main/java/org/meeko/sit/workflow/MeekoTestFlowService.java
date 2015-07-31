@@ -152,6 +152,14 @@ public class MeekoTestFlowService implements Cloneable {
         this.status = STATUS_KO;
     }
 
+    public void testSuccess(Exception e) {
+        // Only if the last step are success
+        if (status == STATUS_OK) {
+            status = STATUS_OK;
+        }
+        this.addStep(ExceptionUtils.getMessageException(e), null, status);
+    }
+
     public void testSuccess() {
         // Only if the last step are success
         if (status == STATUS_OK) {
