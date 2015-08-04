@@ -132,16 +132,19 @@ public class MeekoTestFlowService implements Cloneable {
     public void testFailed() {
         this.addStep(DEFAULT_TEST_FAILED_DESC, null, STATUS_KO);
         this.status = STATUS_KO;
+        end();
     }
 
     public void testFailed(Exception e) {
         this.addStep(ExceptionUtils.getMessageException(e), null, STATUS_KO);
         this.status = STATUS_KO;
+        end();
     }
 
     public void testFailed(String description) {
         this.addStep(description, null, STATUS_KO);
         this.status = STATUS_KO;
+        end();
     }
 
     public void testFailed(String description, Exception e) {
@@ -150,6 +153,7 @@ public class MeekoTestFlowService implements Cloneable {
         descriptionWithException.append(ExceptionUtils.getMessageException(e));
         this.addStep(description, null, STATUS_KO);
         this.status = STATUS_KO;
+        end();
     }
 
     public void testSuccess(Exception e) {
@@ -158,6 +162,7 @@ public class MeekoTestFlowService implements Cloneable {
             status = STATUS_OK;
         }
         this.addStep(ExceptionUtils.getMessageException(e), null, status);
+        end();
     }
 
     public void testSuccess() {
@@ -165,6 +170,7 @@ public class MeekoTestFlowService implements Cloneable {
         if (status == STATUS_OK) {
             status = STATUS_OK;
         }
+        end();
     }
 
     public String getStatus() {
