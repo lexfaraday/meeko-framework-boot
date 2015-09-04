@@ -18,7 +18,7 @@ public abstract class MeekoTestContext implements Callable<Object> {
     public ApplicationContext applicationContext;
 
     @MeekoTestFlow
-    public MeekoTestFlowService workFlow;
+    public MeekoTestFlowService workflow;
 
     private String  environment;
     private boolean trace;

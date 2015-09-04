@@ -123,7 +123,7 @@ public class MeekoTestExecutor {
                         MeekoTestContext meekoTestContext = (MeekoTestContext) obj;
                         meekoTestContext.setEnvironment(environment);
                         meekoTestContext.setTrace(trace);
-                        meekoTestContext.workFlow.start(clazz.getSimpleName());
+                        meekoTestContext.workflow.start(clazz.getSimpleName());
                         Callable<?> callable = (Callable<?>) obj;
                         Future<?> future = executorService.submit(callable);
                         futureList.add(future);
