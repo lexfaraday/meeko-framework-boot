@@ -9,6 +9,49 @@
 
 	<name>meeko-sit</name>
 	<url>http://maven.apache.org</url>
+	<description>An integration test utility to use with spring boot, use with websocket to publish status message around our integration tests.
+Provide new integration test concept "AS SERVICE" with REST operations and real-time messages.</description>
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<mailingLists>
+		<mailingList>
+			<name>Meeko Announce List</name>
+			<post>lexfaraday@gmail.com</post>
+		</mailingList>
+	</mailingLists>
+
+	<scm>
+		<developerConnection>scm:git:https://github.com/lexfaraday/meeko-framework-boot</developerConnection>
+		<url>https://github.com/lexfaraday/meeko-framework-boot</url>
+	</scm>
+
+	<developers>
+		<developer>
+			<id>lexfaraday</id>
+			<name>Alex Gomez</name>
+			<email>lexfaraday@gmail.com</email>
+			<organization>itooin</organization>
+			<roles>
+				<role>Project-Administrator</role>
+				<role>Developer</role>
+			</roles>
+			<timezone>+2</timezone>
+		</developer>
+		<developer>
+			<id>Zavierazo</id>
+			<name>Xavier Ortiz</name>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<timezone>+2</timezone>
+		</developer>
+	</developers>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -51,16 +94,41 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
-				<version>1.5</version>
-				<configuration>
-					<skip>true</skip>
-				</configuration>
+				<version>1.6</version>
 				<executions>
 					<execution>
 						<id>sign-artifacts</id>
 						<phase>verify</phase>
 						<goals>
 							<goal>sign</goal>
+						</goals>
+						<configuration>
+							<keyname>${gpg.keyname}</keyname>
+							<passphraseServerId>${gpg.keyname}</passphraseServerId>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar-no-fork</goal>
 						</goals>
 					</execution>
 				</executions>
