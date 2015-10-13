@@ -9,6 +9,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import org.meeko.sit.annotation.MeekoTest;
+import org.meeko.sit.commons.ContextBean;
 import org.meeko.sit.commons.exceptions.ExceptionUtils;
 import org.meeko.sit.context.MeekoTestContext;
 import org.meeko.sit.utils.MeekoTestUtils;
@@ -30,14 +31,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("prototype")
-public class MeekoTestExecutor {
+public class MeekoTestExecutor extends ContextBean {
 
-    private String  packageBase;
-    private int     fixedThreadPool = 100;
-    private String  environment;
-    private String  testToExecute;
-    private boolean useTopic        = false;
-    private boolean trace           = false;
+    private String packageBase;
+    private int    fixedThreadPool = 100;
+    private String testToExecute;
 
     @Autowired
     private ApplicationContext applicationContext;
@@ -67,7 +65,7 @@ public class MeekoTestExecutor {
             meekoTestFlowService.start(MeekoTestExecutor.class.getSimpleName());
 
             if (packageBase != null) {
-                if (environment != null) {
+                if (super.environment != null) {
 
                     ExecutorService executorService = null;
 
@@ -115,14 +113,14 @@ public class MeekoTestExecutor {
                 meekoTestAnnotation = clazzes.get(clazz);
 
                 // Class can launch in this test profile
-                if (MeekoTestUtils.matchEnvironment(meekoTestAnnotation, environment)) {
+                if (MeekoTestUtils.matchEnvironment(meekoTestAnnotation, super.environment)) {
 
                     Object obj = applicationContext.getBean(clazz);
 
                     if (obj instanceof MeekoTestContext) {
                         MeekoTestContext meekoTestContext = (MeekoTestContext) obj;
-                        meekoTestContext.setEnvironment(environment);
-                        meekoTestContext.setTrace(trace);
+                        meekoTestContext.setEnvironment(super.environment);
+                        meekoTestContext.setTrace(super.trace);
                         meekoTestContext.workflow.start(clazz.getSimpleName());
                         Callable<?> callable = (Callable<?>) obj;
                         Future<?> future = executorService.submit(callable);
@@ -147,29 +145,5 @@ public class MeekoTestExecutor {
 
     public void setFixedThreadPool(int fixedThreadPool) {
         this.fixedThreadPool = fixedThreadPool;
-    }
-
-    public String getEnvironment() {
-        return environment;
-    }
-
-    public void setEnvironment(String environment) {
-        this.environment = environment;
-    }
-
-    public boolean isUseTopic() {
-        return useTopic;
-    }
-
-    public void setUseTopic(boolean useTopic) {
-        this.useTopic = useTopic;
-    }
-
-    public boolean isTrace() {
-        return trace;
-    }
-
-    public void setTrace(boolean trace) {
-        this.trace = trace;
     }
 }
