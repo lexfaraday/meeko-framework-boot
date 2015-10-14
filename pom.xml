@@ -46,6 +46,7 @@ Provide new integration test concept "AS SERVICE" with REST operations and real-
 		<developer>
 			<id>Zavierazo</id>
 			<name>Xavier Ortiz</name>
+			<email>zavierazo@gmail.com</email>
 			<roles>
 				<role>Developer</role>
 			</roles>
